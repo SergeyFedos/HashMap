@@ -22,7 +22,7 @@ export class HashMap {
     return hashCode % this.capacity;
   }
   set(key, value) {
-    if (this.loadFactor > 0.75) this.resize();
+    if (this.size / this.capacity > 0.75) this.resize();
 
     const index = this.hash(key);
     const newNode = new Node(key, value)
@@ -46,8 +46,9 @@ export class HashMap {
     }
   }
   resize() {
+    this.capacity *= 2;
     const oldBuckets = this.buckets;
-    this.buckets = new Array(this.capacity * 2);
+    this.buckets = new Array(this.capacity);
     for (const bucket of oldBuckets) {
       let current = bucket;
       while (current) {
